@@ -19,7 +19,14 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "database:setup": "yarn ts-node ./scripts/setup_db.ts",
-    "database:truncate": "yarn ts-node ./scripts/truncate_db.ts"
+    "database:truncate": "yarn ts-node ./scripts/truncate_db.ts",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
+    "migration:generate": "yarn typeorm migration:generate -d ./src/database/config.database.ts",
+    "migration:up": "yarn typeorm migration:run -d ./src/database/config.database.ts",
+    "migration:down": "yarn typeorm migration:revert -d ./src/database/config.database.ts",
+    "database:clear": "yarn database:truncate && yarn database:setup && yarn migration:up",
+    "database:seed": "npx ts-node src/database/seeds/index.ts",
+    "database:reset": "yarn database:clear && yarn database:seed"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
